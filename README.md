@@ -1,16 +1,35 @@
-# ECE650 : Programming Assignment 2
 
-Replace FIRST_NAME, LAST_NAME, WATIAM, and STUDENT_ID, EMAIL in
-`user.yml` by your first and last name, WatIAM id, student number, and
-email, respectively. Whenever possible, please use ASCII characters.
+# Tseitin’s Transformation
 
-Do not change the format `user.yml`. We will parse it
-automatically. Only enter the information requested.
+## Objective
+The purpose of this project is to transform a Boolean formula F into an equisatisfiable formula F′ in CNF using Tseitin’s Transformation. The program is expected to output the satisfiability result of F by use of an SAT solver on F′.
 
-The main file for your solution to the assignment should be
-`main.cc`.
 
-You might need to modify `CMakeLists.txt` if you are adding additional
-source files for your code.
+### Context-free Grammar for Valid Inputs
 
-Commit your changes and submit on GitLab.
+One valid input formula shall be a string generated from the Context-Free Grammar below:
+Formula ::= ConjTerm | ConjTerm ’+’ Formula
+ConjTerm ::= Term | Term ’*’ ConjTerm
+Term ::= VarName | ’-’Term | ’(’ Formula ’)’
+VarName ::= a continuous sequence of letters (upper- or lowercase) or digits (0-9);
+the first character cannot be a digit; the total length shall be no longer than 10
+
+### Semantics of the Input
+One valid input is a string representation of a Boolean formula SF in conformity with the aforementioned CFG. In SF , a Boolean variable is a sequence of letters (either in upper- or lowercase) or digits (0-9); however, the variable name cannot start with a digit and its total length cannot be longer than 10. ”+” represents the 2-argument infix Boolean function OR; ”∗” represents the 2-argument infix Boolean function AND; ”−” represents the prefix 1-argument Boolean function NOT. The order of operations is: parenthesis > NOT > AND > OR.
+
+### Transformation Example
+(a)
+Input SF :
+c + d
+CNF F′:
+[−1, 2, 3][−2, 1][−3, 1][1]
+Comments:
+2 represents variable c and 3 represents variable d in this example.
+
+(b)
+Input SF :
+c ∗ (d + c)
+CNF F′:
+[−3, 4, 2][−4, 3][−2, 3][−1, 2][−1, 3][−2,−3, 1][1]
+Comments:
+4 represents variable d and 2 represents variable c in this example.
